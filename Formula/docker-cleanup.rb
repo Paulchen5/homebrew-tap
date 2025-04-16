@@ -9,6 +9,17 @@ class DockerCleanup < Formula
 
   def install
     bin.install "docker-cleanup.sh" => "docker-cleanup"
+
+    (lib/"docker/cli-plugins").install_symlink bin/"docker-cleanup"
+  end
+
+  def caveats
+    <<~EOS
+      docker-cleanup is a Docker plugin. For Docker to find the plugin, add "cliPluginsExtraDirs" to ~/.docker/config.json:
+        "cliPluginsExtraDirs": [
+            "#{HOMEBREW_PREFIX}/lib/docker/cli-plugins"
+        ]
+    EOS
   end
 
   test do
